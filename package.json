@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/sweetsummergone/news-explorer-api#readme",
   "dependencies": {
+    "dotenv": "^16.0.1",
     "bcrypt": "^5.0.1",
     "celebrate": "^15.0.1",
     "cors": "^2.8.5",

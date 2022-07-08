@@ -7,9 +7,9 @@ const catchError = (err, res) => {
       message,
     });
   } else if (code && code === 11000) {
-    res.status(403).json({
+    res.status(409).json({
       status: 'error',
-      statusCode: 403,
+      statusCode: 409,
       message: 'Email is already used',
     });
   }

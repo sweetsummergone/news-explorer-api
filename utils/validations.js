@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { Segments } = require('celebrate');
 Joi.objectId = require('joi-objectid')(Joi);
 
 // User
@@ -26,17 +27,18 @@ const validatedCreateArticleSchema = {
 
     date: Joi.string().required(),
 
-    source: Joi.string().required(),
+    source: Joi.string().required().uri(),
 
     link: Joi.string().required().uri(),
 
     image: Joi.string().required().uri(),
-
-    owner: Joi.objectId().required(),
   }),
 };
 
 const validatedDeleteArticleSchema = {
+  [Segments.PARAMS]: Joi.object().keys({
+    userId: Joi.objectId().required(),
+  }),
   body: Joi.object().keys({
     owner: Joi.objectId().required(),
   }),
