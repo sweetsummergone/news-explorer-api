@@ -26,13 +26,11 @@ const validatedCreateArticleSchema = {
 
     date: Joi.string().required(),
 
-    source: Joi.string().required(),
+    source: Joi.string().required().uri(),
 
     link: Joi.string().required().uri(),
 
     image: Joi.string().required().uri(),
-
-    owner: Joi.objectId().required(),
   }),
 };
 
