@@ -42,16 +42,35 @@ const articleSchema = new mongoose.Schema({
       message: (props) => `${props.value} is not a valid URL`,
     },
   },
+  users: {
+    type: [String],
+    required: true,
+  },
 });
 
-articleSchema.statics.authAndDelete = function authAndDelete({ articleId, reqUserId, ownerId }) {
-  if (reqUserId === ownerId) {
-    return this.deleteOne({ _id: articleId })
-      .orFail(() => {
-        throw new ErrorHandler(404, `No card found with ${articleId}`);
-      });
-  }
-  return Promise.reject(new ErrorHandler(403, 'Access denied'));
+articleSchema.statics.findArticle = function findArticle({ link }) {
+  return this.find({ link })
+    .orFail(() => {
+      throw new ErrorHandler(404, `No card found with ${link}`);
+    });
+};
+
+articleSchema.statics.addNewUser = function addNewUser(articleId, user) {
+  return this.updateOne({ _id: articleId }, { $push: { users: user } });
+};
+
+articleSchema.statics.authAndDelete = function authAndDelete({ articleId, user }) {
+  return this.updateOne({ _id: articleId }, { $pull: { users: user } })
+    .orFail(() => {
+      throw new ErrorHandler(404, `No card found with ${articleId}`);
+    });
+};
+
+articleSchema.statics.authAndDeleteByLink = function authAndDeleteByLink({ url, user }) {
+  return this.updateOne({ link: url }, { $pull: { users: user } })
+    .orFail(() => {
+      throw new ErrorHandler(404, `No user found with ID ${user}`);
+    });
 };
 
 module.exports = mongoose.model('article', articleSchema);

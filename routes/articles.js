@@ -2,11 +2,12 @@
 const router = require('express').Router();
 const { celebrate } = require('celebrate');
 
-const { getArticles, createArticle, deleteArticle } = require('../controllers/articles');
-const { validatedCreateArticleSchema, validatedDeleteArticleSchema } = require('../utils/validations');
+const { getArticles, createArticle, deleteArticle, deleteArticleByLink } = require('../controllers/articles');
+const { validatedCreateArticleSchema, validatedDeleteArticleSchema, validatedDeleteArticleByLinkSchema } = require('../utils/validations');
 
 router.get('/', getArticles);
 router.post('/', celebrate(validatedCreateArticleSchema), createArticle);
-router.delete('/:cardId', celebrate(validatedDeleteArticleSchema), deleteArticle);
+router.delete('/', celebrate(validatedDeleteArticleByLinkSchema), deleteArticleByLink);
+router.delete('/:articleId', celebrate(validatedDeleteArticleSchema), deleteArticle);
 
 module.exports = router;
