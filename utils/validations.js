@@ -21,13 +21,13 @@ const validatedCreateArticleSchema = {
   body: Joi.object().keys({
     keyword: Joi.string().max(42).min(2).required(),
 
-    title: Joi.string().max(30).min(2).required(),
+    title: Joi.string().max(128).min(2).required(),
 
     text: Joi.string().required(),
 
     date: Joi.string().required(),
 
-    source: Joi.string().required().uri(),
+    source: Joi.string().required(),
 
     link: Joi.string().required().uri(),
 
@@ -37,10 +37,13 @@ const validatedCreateArticleSchema = {
 
 const validatedDeleteArticleSchema = {
   [Segments.PARAMS]: Joi.object().keys({
-    userId: Joi.objectId().required(),
+    articleId: Joi.objectId().required(),
   }),
+};
+
+const validatedDeleteArticleByLinkSchema = {
   body: Joi.object().keys({
-    owner: Joi.objectId().required(),
+    url: Joi.string().required().uri(),
   }),
 };
 
@@ -48,4 +51,5 @@ module.exports = {
   validatedCreateOrLoginUserSchema,
   validatedCreateArticleSchema,
   validatedDeleteArticleSchema,
+  validatedDeleteArticleByLinkSchema,
 };
